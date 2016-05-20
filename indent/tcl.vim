@@ -58,7 +58,7 @@ function GetTclIndent()
 
     " Set current line indention according to previous line, if previous line
     " is a single closing brace or bracket does not de-indent because itself has de-indented
-    if pline !~ '^\s*}' && pline !~ '^\s*]' && pline !~ '\\$'
+    if pline !~ '^\s*}\s*$' && pline !~ '^\s*]\s*$' && pline !~ '\\$'
         let braceclass = '[][{}]'
         let bracepos = match(pline, braceclass, matchend(pline, '^\s*[]}]'))
         while bracepos != -1
