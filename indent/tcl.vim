@@ -30,6 +30,8 @@ function GetTclIndent()
     let pline = getline(pnum)
 
     let ind = indent(pnum)
+    let ppnum = prevnonblank(pnum-1)
+    let ppline = getline(ppnum)
 
     " Check for continuation line
     if pline =~ '\\$'
@@ -37,13 +39,15 @@ function GetTclIndent()
         " If previous line is backslashed and its previous is also backslashed,
         " current line should not indent again, so de-indent due to previous
         " indention
-        let ppnum = prevnonblank(pnum - 1)
         if ppnum != 0
-            let ppline = getline(ppnum)
             if ppline =~'\\$'
                 let ind = ind - &sw
             endif
         endif
+    elseif ppline =~ '\\$'
+        " if previous line is the end of backslashd lines, current line should
+        " be de-indent
+        let ind = ind - &sw
     endif
 
     " Check for single closing brace on current line
@@ -58,7 +62,7 @@ function GetTclIndent()
 
     " Set current line indention according to previous line, if previous line
     " is a single closing brace or bracket does not de-indent because itself has de-indented
-    if pline !~ '^\s*}\s*$' && pline !~ '^\s*]\s*$' && pline !~ '\\$'
+    if pline !~ '^\s*}\s*$' && pline !~ '^\s*]\s*$'
         let braceclass = '[][{}]'
         let bracepos = match(pline, braceclass, matchend(pline, '^\s*[]}]'))
         while bracepos != -1
