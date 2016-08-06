@@ -47,7 +47,7 @@ function GetTclIndent()
             "
             " if previous is closing a block, should check the line
             " above the opening line
-            if pline =~ "[]}]\s*\\$" 
+            if pline =~ '[]}]\s*\\$'
                 let match_pair_lnum=Get_Matching_Lnum(pnum)
                 let match_pair_pline=getline(prevnonblank(match_pair_lnum-1))
                 if Is_Continuation_Line(match_pair_pline)
@@ -64,7 +64,7 @@ function GetTclIndent()
         " check if previous line is last line of continuation lines
         "
         " check the opening line and its previous line
-    elseif pline =~ "[]}]\s*$" || pline =~ "[]}]\s*;.*$"
+    elseif pline =~ '[]}]\s*$' || pline =~ '[]}]\s*;.*$'
         let match_pair_lnum = Get_Matching_Lnum(pnum)
         let match_pair_pnum = prevnonblank(match_pair_lnum-1)
         let match_pair_pline=getline(match_pair_pnum)
